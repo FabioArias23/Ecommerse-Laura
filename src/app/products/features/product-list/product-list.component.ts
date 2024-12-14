@@ -1,18 +1,25 @@
-import { Component, inject } from '@angular/core';
-import { ProductService } from '../../data-access/product.service';
+import { Component, inject, } from '@angular/core';
+import { ProductsStateService } from '../../data-access/product-state.service';
+import { ProductsService } from '../../data-access/product.service';
+import { ProductCardComponent } from '../../ui/product-card/product-card.component';
+
+
 
 @Component({
   selector: 'app-product-list',
-  imports: [],
+  imports:[ProductCardComponent],
   templateUrl: './product-list.component.html',
   styles: ``,
-  providers: [ProductService ],
+  providers: [ ProductsStateService,ProductsService],
+
+// No necesitas agregarlo aquí si está en 'providedIn: root'.
 })
 export default class ProductListComponent {
-  private productsService = inject(ProductService);
-  constructor(){
-    this.productsService.getProducts().subscribe(products =>{
-      console.log(products)
-    })
-  }
+
+  productsState = inject(ProductsStateService)
+
+changePage(){
+  this.productsState.changePage$.next(2)
+}
+
 }

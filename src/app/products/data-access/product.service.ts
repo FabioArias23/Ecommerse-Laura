@@ -1,11 +1,19 @@
-import { HttpClient } from "@angular/common/http";
-import { inject, Injectable } from "@angular/core";
 
-@Injectable()
-export class ProductService{
+import {  Injectable } from "@angular/core";
+import { BaseHttpService } from "../../shared/data-access/base-http.service";
+import { Product } from "../../shared/interfaces/product.interfaces";
+import { Observable } from "rxjs";
 
-  private http = inject(HttpClient)
-  getProducts(){
-    return this.http.get("https://fakestoreapi.com/products")
+const LIMIT = 5
+@Injectable({
+  providedIn: 'root',
+})
+export class ProductsService extends BaseHttpService {
+    getProducts(page: number):Observable<Product[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/products`,{
+      params:{
+        limit: page * LIMIT
+      }
+    });
   }
 }
